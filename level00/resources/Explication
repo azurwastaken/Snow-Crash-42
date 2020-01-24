@@ -1,0 +1,26 @@
+#Comme vu dans la video, on find tout les fichier executable par flag00 (nous)
+
+find / -user flag00 2>/dev/null
+
+#On obtient 2 fichiers, quand on les cat on obtiens le meme contenu:
+
+cdiiddwpgswtgt
+
+#En essayant de se connecter avec, on se fais rejecter, conclusion : le mot de pass est crypte
+
+#On vas donc sur dcode.fr (site donne dans la video) pour tester tout les mode de cryptage
+#Le chiffrement qui convient est celui de cesar:
+
+nottoohardhere
+
+#on s'identifie ensuite en temps que flag00
+
+su flag00
+
+#puis getflag
+
+getflag
+
+# et on obtiens le flag pour le level01
+
+Here is your token : x24ti5gi3x0ol2eh4esiuxias
