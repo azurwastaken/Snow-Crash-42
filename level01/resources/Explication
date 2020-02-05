@@ -1,0 +1,48 @@
+#Comme au niveau, on find tout les fichier executable par flag01 (nous)
+
+find / -user flag01 2>/dev/null
+
+#On obtient rien
+
+#Apres plusieurs recherche, j'apprends l'existence d'un fichier /etc/passwd
+
+cat /etc/passwd
+
+#On a une liste de compte dont le mot de passe n'est pas visible sauf flag01 qui lui a son mot de passe
+#affiche mais crypte
+
+flag01:42hDRfypTqqnw:3001:3001::/home/flag/flag01:/bin/bash
+
+#Sur un terminal a par je cree une machine docker
+
+docker-machine create --driver=virtualbox CHAR
+
+#Je lance ensuite ma machine fraichement cree
+
+eval $(docker-machine env CHAR)
+
+#Je recupere une image fedora et la lance
+
+docker pull fedora
+docker run -it --rm fedora /bin/sh
+
+#Une fois dessus, j'install johntheripper
+
+yum install john
+
+#Je met ensuite le couple flag01:42hDRfypTqqnw dans un fichier password.txt et lance john
+
+john password.txt
+>>> Loaded 1 password hash (descrypt, traditional crypt(3) [DES 128/128 SSE2-16])
+Press 'q' or Ctrl-C to abort, almost any other key for status
+abcdefg          (flag01)
+
+#Je retourne sur la machine et je peux connecter au compte flag01
+
+su flag01
+abcdefg
+
+#Je recupere le flag
+
+getflag
+>>> Check flag.Here is your token : f2av5il02puano7naaf6adaaf

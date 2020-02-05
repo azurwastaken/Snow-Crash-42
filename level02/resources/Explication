@@ -1,0 +1,23 @@
+#On recupere le fichier a la racine
+
+scp '-P 4242' level02@10.11.200.127:level02.pcap .
+
+#On lui donne les bons droits
+
+chmod 777 level02.pcap
+
+#On l'ouvre avec Wireshark
+
+#On parcours les paquets jusqu'a tomber sur un paquets contenant en data "Password"
+
+#Recupere chaque caractere jusqu'a arriver a un symbole CR (0d)
+
+>>>ft_waNDReL0L
+
+#On recupere le flag
+
+su flag02
+ft_waNDReL0L
+
+getflag
+kooda2puivaav1idi4f57q8iq
