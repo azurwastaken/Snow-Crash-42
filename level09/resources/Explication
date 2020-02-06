@@ -1,1 +1,68 @@
-ptrace(0, 0, 1, 0, 0xb7e2fe38)
+#On arrive sur la session, on a un binaire et un fichier token
+#Nous avons les droits en lecture sur le fichier token, je l'affiche
+
+cat token
+>>> f4kmm6p|=�p�n��DB�Du{��
+
+#On voit que le token est encrypte, ce cryptage a probablement quelque chose a voir avec le binaire ici present
+#J'essaie donc de le lancer avec le fichier en parametre
+
+./level09 ./token
+>>> .0vrojt
+
+#La sortie etant bizarre par rapport au contenue du fichier, je me dis que le binaire ne fais pas d'open sur un fichier
+# j'essaie d'executer ltrace sur le binaire mais celui ci est protege
+# dont le path a ete donne en parametre
+
+#j'essaie donc de cat pipe le contenu du fichier dans le binaire
+
+cat ./token | ./level09
+>>> You need to provied only one arg.
+
+#Echec une nouvelle fois
+#j'essaie donc plusieurs entree pour en deduire le fonctionnement du binaire, une chose est sur c'est 
+# un programme de cryptage ou de decryptage
+# apres plusieurs essai, ces entree m'ont permis de deduire la logique derriere ce binaire:
+
+./level09 aaaa
+>>> abcd
+./level09 bbbb
+>>> bcde
+
+#On voit clairement que le programme parcours la chaine et ajoute son numero d'index a chaque caractere
+#C'est donc un algo d'encryptage
+#Pour obtenir le token il suffit donc de coder un petit script faisant l'inverse, c'est a dire, qui soustrait l'indice
+# chaque caractere donne en parametre
+
+void main(int ac, char **av)
+{
+	char buffer[1000];
+	int fd = open(av[1], 0x0000); // 0x0000 = O_RDONLY qui n'est pas defini sur la VM
+	int i = 0;
+
+	read(fd, buffer, 999);
+	buffer[999] = '\0';
+
+	while(buffer[i] != '\0')
+	{
+		buffer[i] -= i;
+		i++;
+	}
+	printf("%s\n", buffer);
+}
+
+#On compile le tout et on passe le fichier en parametre
+
+gcc main.c 
+./a.out ~/token
+>>>f3iji1ju5yuevaus41q1afiuq�
+
+#On copie tout ce qu'il y a avant le caractere bizarre a la fin et on essaie de se connecter a flag09
+
+su flag09
+f3iji1ju5yuevaus41q1afiuq
+
+#Victoire !!
+
+getflag
+>>> Check flag.Here is your token : s5cAJpM8ev6XHw998pRWG728z
