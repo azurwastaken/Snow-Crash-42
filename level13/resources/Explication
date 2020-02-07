@@ -1,0 +1,32 @@
+# En arrivant sur le home on voit un binaire
+# j'essaie de le lancer et j'obtiens :
+
+./level13
+>>> UID 2013 started us but we we expect 4242
+
+# je lance avec ltrace :
+
+ltrace ./level13
+>>>
+__libc_start_main(0x804858c, 1, 0xbffff7a4, 0x80485f0, 0x8048660 <unfinished ...>
+getuid()                                                                  = 2013
+getuid()                                                                  = 2013
+printf("UID %d started us but we we expe"..., 2013UID 2013 started us but we we expect 4242
+)                       = 42
+exit(1 <unfinished ...>
++++ exited (status 1) +++
+
+# je n'ai pas assez d'information mis a part que le programme recupere mon userID et dois surement le comparer avec 4242
+# Je lance donc avec gdb peda (prealablement installe)
+
+gdb ./level13
+
+#j'avance etape par etape jusqu'a passer les deux appels de getuid()
+#On y voit une comparaison (cmp) entre eax et 0x1092(4242)
+#Je change donc la valeur du registre eax par 0x1092
+
+(gdb) set $eax=0x1092
+continue
+>>> your token is 2A31L79asukciNyi8uppkEuSx
+
+
