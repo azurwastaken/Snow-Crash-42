@@ -37,5 +37,17 @@ id flag14
 #3014 en hexa donne 0xBC6 ce qui correspond au dernier cmp de la foret, on set donc eax a 3014
 
 st $eax=0xBC6                           // 3014 marche aussi mais c'est plus joli en hexa
+continue
 
+>>> Check flag.Here is your token : 7QiHafiNa3HVozsaXkawuYrTstxbpABHD8CPnHJ
+[Inferior 1 (process 3580) exited normally]
+Warning: not running
+
+#Et voila notre dernier flag
+#On peut essayer de se connecter a flag14
+
+su flag14
+7QiHafiNa3HVozsaXkawuYrTstxbpABHD8CPnHJ
+
+>>> Congratulation. Type getflag to get the key and send it to me the owner of this livecd :)
 
