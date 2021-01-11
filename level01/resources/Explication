@@ -1,48 +1,43 @@
-#Comme au niveau, on find tout les fichier executable par flag01 (nous)
+# I tried to use the same techniques as the last level...
 
 find / -user flag01 2>/dev/null
 
-#On obtient rien
+# ...But it would be to easy
 
-#Apres plusieurs recherche, j'apprends l'existence d'un fichier /etc/passwd
+#After many research, i discovered a file named /etc/passwd
 
 cat /etc/passwd
 
-#On a une liste de compte dont le mot de passe n'est pas visible sauf flag01 qui lui a son mot de passe
-#affiche mais crypte
+#There is bunch of user/password pair but only one is visible but crypted : the flag01 one
 
 flag01:42hDRfypTqqnw:3001:3001::/home/flag/flag01:/bin/bash
 
-#Sur un terminal a par je cree une machine docker
+#On my main computer i start a terminal and i create a docker
 
 docker-machine create --driver=virtualbox CHAR
 
-#Je lance ensuite ma machine fraichement cree
-
 eval $(docker-machine env CHAR)
 
-#Je recupere une image fedora et la lance
+#I installed a fedora os on it
 
 docker pull fedora
 docker run -it --rm fedora /bin/sh
 
-#Une fois dessus, j'install johntheripper
+#let's install johntheripper (a famous password cracker)
 
 yum install john
 
-#Je met ensuite le couple flag01:42hDRfypTqqnw dans un fichier password.txt et lance john
+#i put the pair flag01:42hDRfypTqqnw in a txt file password.txt and run john
 
 john password.txt
 >>> Loaded 1 password hash (descrypt, traditional crypt(3) [DES 128/128 SSE2-16])
 Press 'q' or Ctrl-C to abort, almost any other key for status
 abcdefg          (flag01)
 
-#Je retourne sur la machine et je peux connecter au compte flag01
+#let's turn back to the vm and try it out
 
 su flag01
 abcdefg
-
-#Je recupere le flag
 
 getflag
 >>> Check flag.Here is your token : f2av5il02puano7naaf6adaaf

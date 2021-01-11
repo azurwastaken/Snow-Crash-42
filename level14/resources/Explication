@@ -1,53 +1,54 @@
-#En arrivant sur ce niveau la, il n'y a rien. Apres avoir chercher il n'y a plus qu'a casser getflag
-#J'essaie de faire un ltrace dessus mais il est protege, du coup je tente ma chance avec gdb peda
+#There is nothing on this level, so we have to break the only thing that left : getflag
+
+#as expected, getflag is protected against ltrace, lets try with gdb
 
 gdb getflag
 
-#on met un breakpoint sur le main
+# We put a breakpoint on main
 
 b main
 run
 
 #eax est le registre qui enregistre le retour de fonction, on peut donc passer par dessus ptrace et modifie le registre eax
-#juste apres celle ci
+#As said before, eax store the return value of any function, so we can go trough ptrace by modifying eax right after the ptrace call
 
 ni                                      // jusqu'a avoir passer ptrace
 set $eax=0                              // pour passer le test eax eax qui correspond a cmp eax 0
 
-#on veut ensuite une vu d'ensemble sur l'assembleur
+#To have a better overview, we want to have a look on the assembly code
 
 pdissas
 
-#on voit qu'il y a plusieurs appels a differente fonction mais ce qui attire l'oeil c'est la foret de cmp (if) qui est
-#precede par un getuid
-#On place donc un breakpoint apres le getuid
+# At the first sight, we can see that getflag is a huge program but one thing is very catchy : a cmp forest who seems like a switch case on a getuid output
+#Let put a breakpoint right after the getuid call
 
 b *0x08048b02
 continue
 
-#getflag est une fonction qui renvoie un flag en fonction de l'utilisateur qui lance la commande.
-#Etant donne que la foret de if compare le retour de la fonction getuid (eax) avec des valeur en dur, on peut supposer
-# que ces valeur sont des uid (user id) correspondant au different flag user
+#getflag return a different flag depending on the UID of the user who run this command
 
-#Dans un autre terminal on recupere l'id du flag voulu
+#all those cmp compare the return value of getuid with some raw value, which must be UIDs
+
+#In another shell, lets retrieve flag14 UID
 
 id flag14
 >>> uid=3014(flag14) gid=3014(flag14) groups=3014(flag14),1001(flag)
 
-#3014 en hexa donne 0xBC6 ce qui correspond au dernier cmp de la foret, on set donc eax a 3014
+# the hex value of 3014 is 0xBC6 which is exactly the same as the last value compared with eax, lets set eax
 
-st $eax=0xBC6                           // 3014 marche aussi mais c'est plus joli en hexa
+st $eax=0xBC6
 continue
 
 >>> Check flag.Here is your token : 7QiHafiNa3HVozsaXkawuYrTstxbpABHD8CPnHJ
 [Inferior 1 (process 3580) exited normally]
 Warning: not running
 
-#Et voila notre dernier flag
-#On peut essayer de se connecter a flag14
+#Here it is, lets connect to flag14
 
 su flag14
 7QiHafiNa3HVozsaXkawuYrTstxbpABHD8CPnHJ
 
 >>> Congratulation. Type getflag to get the key and send it to me the owner of this livecd :)
+
+#The flag was also the password for flag14 
 

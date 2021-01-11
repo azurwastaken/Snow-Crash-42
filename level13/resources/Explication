@@ -1,10 +1,9 @@
-# En arrivant sur le home on voit un binaire
-# j'essaie de le lancer et j'obtiens :
+# There is a binary in our home directory, lets start it : 
 
 ./level13
 >>> UID 2013 started us but we we expect 4242
 
-# je lance avec ltrace :
+# try it with ltrace :
 
 ltrace ./level13
 >>>
@@ -16,17 +15,18 @@ printf("UID %d started us but we we expe"..., 2013UID 2013 started us but we we 
 exit(1 <unfinished ...>
 +++ exited (status 1) +++
 
-# je n'ai pas assez d'information mis a part que le programme recupere mon userID et dois surement le comparer avec 4242
-# Je lance donc avec gdb peda (prealablement installe)
+# I don't have many information except that it retrieve my userID and may compare it with the raw value 4242
+# to retrieve more information i will use my debugger (gdb with the plugin peda to make it more confortable)
 
 gdb ./level13
 
-#j'avance etape par etape jusqu'a passer les deux appels de getuid()
-#On y voit une comparaison (cmp) entre eax et 0x1092(4242)
-#Je change donc la valeur du registre eax par 0x1092
+# I go throughout the execution, step by step, until i went through the getuid calls
+# There is a comparison (cmp) between the eax register and 0x1092 (4242 in decimal) (as expected)
+
+#I assign 0x1092 to the register eax and continue the execution
 
 (gdb) set $eax=0x1092
 continue
 >>> your token is 2A31L79asukciNyi8uppkEuSx
 
-
+# FYI : eax is the register in which the result of a function call is stored, so at this point, eax had the return value of getuid as value

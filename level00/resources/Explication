@@ -1,26 +1,23 @@
-#Comme vu dans la video, on find tout les fichier executable par flag00 (nous)
+#As seen in the video, we use the find command to retrieve all file executable by flag00
 
 find / -user flag00 2>/dev/null
 
-#On obtient 2 fichiers, quand on les cat on obtiens le meme contenu:
+#We get 2 files, lets use cat on them
 
 cdiiddwpgswtgt
 
-#En essayant de se connecter avec, on se fais rejecter, conclusion : le mot de pass est crypte
+# While trying it as password, we got rejected => password should be encrypted
 
-#On vas donc sur dcode.fr (site donne dans la video) pour tester tout les mode de cryptage
-#Le chiffrement qui convient est celui de cesar:
+#Let's go to dcode.fr (cf : video) to check every kind of encryption methode
+#It seems to be the caesar one
 
 nottoohardhere
 
-#on s'identifie ensuite en temps que flag00
+#Let's try this as password
 
 su flag00
 
-#puis getflag
+#It works !
 
 getflag
-
-# et on obtiens le flag pour le level01
-
 Here is your token : x24ti5gi3x0ol2eh4esiuxias

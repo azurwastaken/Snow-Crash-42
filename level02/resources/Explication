@@ -1,20 +1,18 @@
-#On recupere le fichier a la racine
+#There is a pcap file in our home, we retrieve it through scp
 
 scp '-P 4242' level02@10.11.200.127:level02.pcap .
 
-#On lui donne les bons droits
-
 chmod 777 level02.pcap
 
-#On l'ouvre avec Wireshark
+#Let's open it with Wireshark
 
-#On parcours les paquets jusqu'a tomber sur un paquets contenant en data "Password"
+#We look up on each packet until find one with "Password" as data
 
-#Recupere chaque caractere jusqu'a arriver a un symbole CR (0d)
+#Once we got it, we retrieve each char until a CR (0x0D)
 
 >>>ft_waNDReL0L
 
-#On recupere le flag
+#Lets get the flag 
 
 su flag02
 ft_waNDReL0L

