@@ -1,5 +1,5 @@
 #On our home directory we have a binary and a "token" file which we are not allowed to read
-# As in the previous level, the binary is a setUID and after running it, it appears that's its a file reader
+# As in the previous level, the binary is a setUID and after running it, it appears that's a file reader
 
 ./level08 token
 >>> You may not access token
