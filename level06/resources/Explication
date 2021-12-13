@@ -1,6 +1,6 @@
-#On our home we have 2 file : a binary and his related source code in php
+#On our home we have 2 files : a binary and his related source code in php
 
-#This file seems to print the content of a file, so our exploit would be a file with some unix command to execute
+#This code file seems to print the content of a file, so our exploit would be a file with some unix command to execute
 
 # After some research, i found a well known security breach in preg_replace with \e 
 

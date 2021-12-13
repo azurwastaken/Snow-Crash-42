@@ -1,4 +1,4 @@
-#As previous level we got a token file and a binary, but this time we can read token
+#As previous level we got a token file and a binary, but this time we can read the file
 
 cat token
 >>> f4kmm6p|=�p�n��DB�Du{��
@@ -9,17 +9,17 @@ cat token
 >>> .0vrojt
 
 #The output is really weird if you compare with the content of token, especially when you look at his size
-# i tried to ltrace the binary but it is protected
+# I tried to ltrace the binary but it is protected
 # however, if you look at the previous output, it has the same size as the string "./token"
 
-#So i tried to directly cat the content throug a pipe
+#So I tried to directly cat the content through a pipe
 
 cat ./token | ./level09
 >>> You need to provied only one arg.
 
-# But all thos giltched char seems to make it bug
+# But all thos glitched char seems to make it bug
 
-# After trying many input to reverse Engineer the algorithm, im sure that this binary encrypt or decrypt the string passed as parameter 
+# After trying many input to reverse Engineer the algorithm, I'm sure that this binary encrypt or decrypt the string passed as parameter 
 # After many tries, those specific input helped me to find how it work
 
 ./level09 aaaa

